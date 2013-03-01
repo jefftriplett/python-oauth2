@@ -49,19 +49,19 @@ class TestError(unittest.TestCase):
     def test_message(self):
         try:
             raise oauth.Error
-        except oauth.Error, e:
+        except oauth.Error as e:
             self.assertEqual(e.message, 'OAuth error occurred.')
 
         msg = 'OMG THINGS BROKE!!!!'
         try:
             raise oauth.Error(msg)
-        except oauth.Error, e:
+        except oauth.Error as e:
             self.assertEqual(e.message, msg)
 
     def test_str(self):
         try:
             raise oauth.Error
-        except oauth.Error, e:
+        except oauth.Error as e:
             self.assertEquals(str(e), 'OAuth error occurred.')
 
 class TestGenerateFunctions(unittest.TestCase):
@@ -90,7 +90,7 @@ class TestGenerateFunctions(unittest.TestCase):
         parts = oauth_string.split(',')
         for part in parts:
             var, val = part.split('=')
-            returned[var] = val.strip('"') 
+            returned[var] = val.strip('"')
 
         self.assertEquals('HMAC-SHA1', returned['oauth_signature_method'])
         self.assertEquals('user_token', returned['oauth_token'])
@@ -286,7 +286,7 @@ class TestRequest(unittest.TestCase, ReallyEqualMixin):
             self.fail("AttributeError should have been raised on empty url.")
         except AttributeError:
             pass
-        except Exception, e:
+        except Exception as e:
             self.fail(str(e))
 
     def test_url(self):
@@ -329,7 +329,7 @@ class TestRequest(unittest.TestCase, ReallyEqualMixin):
 
         try:
             try:
-                request.sign_request(oauth.SignatureMethod_HMAC_SHA1(), 
+                request.sign_request(oauth.SignatureMethod_HMAC_SHA1(),
                     consumer, token)
             except TypeError:
                 self.fail("Signature method didn't check for a normalized URL.")
@@ -340,7 +340,7 @@ class TestRequest(unittest.TestCase, ReallyEqualMixin):
         url = "https://www.google.com/m8/feeds/contacts/default/full/?alt=json&max-contacts=10"
         normalized_url = urlparse.urlunparse(urlparse.urlparse(url)[:3] + (None, None, None))
         method = "GET"
-        
+
         req = oauth.Request(method, url)
         self.assertEquals(req.url, url)
         self.assertEquals(req.normalized_url, normalized_url)
@@ -471,7 +471,7 @@ class TestRequest(unittest.TestCase, ReallyEqualMixin):
         a = parse_qs(exp.query)
         b = parse_qs(res.query)
         self.assertEquals(a, b)
-    
+
     def test_to_url_with_query(self):
         url = "https://www.google.com/m8/feeds/contacts/default/full/?alt=json&max-contacts=10"
 
@@ -999,7 +999,7 @@ class TestServer(unittest.TestCase):
         server = oauth.Server()
         headers = server.build_authenticate_header('example.com')
         self.assertTrue('WWW-Authenticate' in headers)
-        self.assertEquals('OAuth realm="example.com"', 
+        self.assertEquals('OAuth realm="example.com"',
             headers['WWW-Authenticate'])
 
     def test_no_version(self):

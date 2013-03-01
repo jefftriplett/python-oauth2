@@ -1,6 +1,6 @@
 PYTHON      = $(shell test -x bin/python && echo bin/python || \
                       echo `which python`)
-PYVERS      = $(shell $(PYTHON) -c 'import sys; print "%s.%s" % sys.version_info[0:2]')
+PYVERS      = $(shell $(PYTHON) -c 'import sys; print("%s.%s" % sys.version_info[0:2])')
 VIRTUALENV  = $(shell /bin/echo -n `which virtualenv || \
                                     which virtualenv-$(PYVERS) || \
                                     which virtualenv$(PYVERS)`)
